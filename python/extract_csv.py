@@ -35,13 +35,16 @@ def main():
 	parser = argparse.ArgumentParser(description="Extract given fields from csv and output in the same order.")
 	parser.add_argument("in_file", type=str, help="file to extract from")
 	parser.add_argument("fields", metavar="field", type=str, nargs="+", help="list of fields to extract")
+	parser.add_argument("--del", default=",")
 	
 	args = parser.parse_args()
+	
 	file = args.in_file
 	fields = args.fields
+	delimiter = args.del
 	
 	with open(file, 'rb') as csv_file:
-	    csv_reader = csv.reader(csv_file, delimiter=",")
+	    csv_reader = csv.reader(csv_file, delimiter=delimiter)
 	    header = csv_reader.next()
 	    h = header_map(header, fields)
 	    
