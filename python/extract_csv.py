@@ -35,19 +35,23 @@ def main():
 	parser = argparse.ArgumentParser(description="Extract given fields from csv and output in the same order.")
 	parser.add_argument("in_file", type=str, help="file to extract from")
 	parser.add_argument("fields", metavar="field", type=str, nargs="+", help="list of fields to extract")
-	parser.add_argument("--del", default=",")
+	parser.add_argument("-d", "--delimiter", default=",", help="parser delimiter")
 	
 	args = parser.parse_args()
-	
+
 	file = args.in_file
 	fields = args.fields
-	delimiter = args.del
+	delimiter = args.delimiter
+
+	# todo - find a cleaner solution for this.
+	if delimiter == "\\t":
+	    delimiter = "\t"
 	
 	with open(file, 'rb') as csv_file:
 	    csv_reader = csv.reader(csv_file, delimiter=delimiter)
 	    header = csv_reader.next()
 	    h = header_map(header, fields)
-	    
+	    print(h)
 	    print(",".join(fields))
 	    
 	    for row in csv_reader:
